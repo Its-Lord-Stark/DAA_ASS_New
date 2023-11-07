@@ -11,13 +11,12 @@ struct Item {
 };
 
 bool compareItems(const Item& item1, const Item& item2) {
-    return static_cast<double>(item1.value) / item1.weight > static_cast<double>(item2.value) / item2.weight;
+    return (double)(item1.value) / item1.weight > (double)(item2.value) / item2.weight;
 }
 
 double fractionalKnapsack(int capacity, std::vector<Item>& items) {
     double totalValue = 0.0;
 
-    // Sort items in descending order of value-to-weight ratio.
     sort(items.begin(), items.end(), compareItems);
 
     for (const Item& item : items) {
@@ -25,11 +24,9 @@ double fractionalKnapsack(int capacity, std::vector<Item>& items) {
             break;
         }
 
-        // Take the maximum amount of the item that can fit in the knapsack.
-        double taken = std::min(static_cast<double>(capacity), static_cast<double>(item.weight));
+        double taken = min((double)(capacity), (double)(item.weight));
 
-        // Update the total value and remaining capacity.
-        totalValue += taken * (static_cast<double>(item.value) / item.weight);
+        totalValue += taken * ((double)(item.value) / item.weight);
         capacity -= taken;
     }
 
@@ -37,10 +34,29 @@ double fractionalKnapsack(int capacity, std::vector<Item>& items) {
 }
 
 int main() {
-    using namespace std; // Use the std namespace to simplify cout usage.
+    using namespace std; 
+    int n;
+    cout<<"No.of items:"<<endl;
+    cin>>n;
 
-    int capacity = 50;
-    vector<Item> items = {{10, 60}, {20, 100}, {30, 120}};
+    int capacity;
+    cout<<"Enter capacity: "<<endl;
+    cin>>capacity;
+
+
+    vector<Item> items(n);
+    for(int i=0;i<n;i++)
+    {
+        int profit;
+        int weight;
+        cout<<"Item "<<i<<" Weight"<<endl;
+        cin>>weight;
+        items[i].weight = weight;
+
+        cout<<"Item "<<i<<" value"<<endl;
+        cin>>profit;
+        items[i].value = profit;
+    }
 
     double maxValue = fractionalKnapsack(capacity, items);
     cout << "Maximum value that can be obtained: " << maxValue << endl;

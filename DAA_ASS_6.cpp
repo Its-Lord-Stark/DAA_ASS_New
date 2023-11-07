@@ -1,41 +1,80 @@
-#include <iostream>
-#include <vector>
+
+
+
+#include<iostream>
+#include<cstdlib>
+ 
 using namespace std;
-
-int partiton(vector<int> &arr, int low , int high)
+ 
+void swap(int *a, int *b)
 {
-    int pivot = arr[high];
-    int j=low-1;
-
-    for (int i = low; i <=high-1; i++)
+	int temp; 
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+ 
+int Partition(int a[], int low, int high)
+{
+	int pivot, index, i;
+	index = low;
+	pivot = high;
+ 
+	for(i=low; i < high; i++)
     {
-        if(arr[i]<pivot)
-        {
-            j++;
-            swap(arr[j],arr[i]);
-        }
-    }
-
-    swap(arr[j+1],arr[high]);
-    return j+1;
-    
+		if(a[i] < a[pivot])
+		{
+			swap(&a[i], &a[index]);
+			index++;
+		}
+	}
+	swap(&a[pivot], &a[index]);
+ 
+	return index;
+}
+ 
+int RandomPivotPartition(int a[], int low, int high)
+{
+	int pvt, n, temp;
+	n = rand();
+	pvt = low + n%(high-low+1);
+ 
+	swap(&a[high], &a[pvt]);
+ 
+	return Partition(a, low, high);
 }
 
-void quickSort(vector<int> &v , int low , int high)
+int QuickSort(int a[], int low, int high)
 {
-    if(low<high)
-    {
-    int p = partiton(v, low , high);
-    quickSort(v,low,p-1);
-    quickSort(v,p+1,high);
-    }
+	int pindex;
+	if(low < high)
+	{
+		// pindex = RandomPivotPartition(a, low, high);
+        pindex = Partition(a, low, high);   
+		QuickSort(a, low, pindex-1);
+		QuickSort(a, pindex+1, high);
+	}
+	return 0;
 }
+ 
 int main()
 {
-    vector<int> v = {11,2,7,4,99,3};
-    quickSort(v , 0 , v.size()-1);
-    for(int x : v)
-    {
-        cout<< x<<" ";
-    }
+	int n, i;
+	cout<<"\nEnter the number of data element to be sorted: ";
+	cin>>n;
+ 
+	int arr[n];
+	for(i = 0; i < n; i++)
+	{
+        cout<<"Enter element "<<i+1<<": ";
+		cin>>arr[i];
+	}
+ 
+	QuickSort(arr, 0, n-1);
+ 
+	cout<<"\nSorted Data ";
+	for (i = 0; i < n; i++)
+        	cout<<"->"<<arr[i];
+ 
+	return 0;
 }
