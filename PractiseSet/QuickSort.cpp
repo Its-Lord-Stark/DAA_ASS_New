@@ -43,12 +43,10 @@ void printArray(vector<int> arr)
 }
 
 void quickSort(vector<int> &arr , int low, int high)
-{
-    int p_index;
-    if(low<high)
+{    if(low<high)
     {
     // p_index = partition(arr,low,high);
-    p_index = rand_part(arr, low, high);
+    int p_index = rand_part(arr, low, high);
     quickSort(arr, low, p_index-1);
     quickSort(arr, p_index+1, high);
     } 
